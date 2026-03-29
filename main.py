@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from apscheduler.schedulers.blocking import BlockingScheduler
 import requests
-from pykalshi import KalshiClient
+from pykalshi import KalshiClient, MarketStatus
 
 load_dotenv()
 
@@ -77,7 +77,7 @@ def get_estimated_prob(market):
 
 def scan_and_trade():
     send_telegram(f"🔄 Bot scan started at {datetime.now().strftime('%H:%M')} — looking for edges...")
-    markets = kalshi.get_markets(status="open", limit=200)
+    markets = kalshi.get_markets(status=MarketStatus.OPEN, limit=200)
     
     trades_today = 0
     for m in markets.get("markets", []):
