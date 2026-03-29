@@ -2,3 +2,4 @@ pykalshi
 requests
 python-dotenv
 apscheduler
+pandas
