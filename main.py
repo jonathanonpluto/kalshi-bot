@@ -11,15 +11,20 @@ load_dotenv()
 
 # ===================== CONFIG =====================
 KALSHI_API_KEY_ID = os.getenv("KALSHI_API_KEY_ID")
-KALSHI_PRIVATE_KEY = os.getenv("KALSHI_PRIVATE_KEY")  # full PEM text
+# FIX for Railway: restore real newlines even if pasted as one line
+KALSHI_PRIVATE_KEY_RAW = os.getenv("KALSHI_PRIVATE_KEY", "").strip()
+KALSHI_PRIVATE_KEY = KALSHI_PRIVATE_KEY_RAW.replace("\\n", "\n").replace("\r", "")
+
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-XAI_API_KEY = os.getenv("XAI_API_KEY")  # optional — get free at x.ai/api
+XAI_API_KEY = os.getenv("XAI_API_KEY")  # optional
 EDGE_THRESHOLD = float(os.getenv("EDGE_THRESHOLD", 0.06))
 TRADE_SIZE = int(os.getenv("TRADE_SIZE_DOLLARS", 20))
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL_SECONDS", 300))
 
-# Write private key to temp file
+print("✅ Private key loaded — length after fix:", len(KALSHI_PRIVATE_KEY))  # debug line
+
+# Write private key to temp file for Kalshi SDK
 with tempfile.NamedTemporaryFile(mode="w", suffix=".pem", delete=False) as f:
     f.write(KALSHI_PRIVATE_KEY)
     PRIVATE_KEY_PATH = f.name
