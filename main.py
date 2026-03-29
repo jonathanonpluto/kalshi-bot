@@ -78,9 +78,11 @@ def get_estimated_prob(market):
 def scan_and_trade():
     send_telegram(f"🔄 Bot scan started at {datetime.now().strftime('%H:%M')} — looking for edges...")
     markets = kalshi.get_markets(status=MarketStatus.OPEN, limit=200)
+# pykalshi returns DataFrameList → convert to list of dicts
+market_list = markets.to_dataframe().to_dict(orient="records")
     
     trades_today = 0
-    for m in markets.get("markets", []):
+    for m in market_list:
         if m.get("volume_24h", 0) < 5000:
             continue
         if trades_today >= 12:
