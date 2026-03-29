@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from apscheduler.schedulers.blocking import BlockingScheduler
 import requests
-from pykalshi import Kalshi
+from pykalshi import KalshiClient
 
 load_dotenv()
 
@@ -31,7 +31,7 @@ with tempfile.NamedTemporaryFile(mode="w", suffix=".pem", delete=False) as f:
 
 # LIVE Kalshi client
 host = "https://api.elections.kalshi.com/trade-api/v2"
-kalshi = Kalshi(api_key_id=KALSHI_API_KEY_ID, private_key_path=PRIVATE_KEY_PATH, host=host)
+kalshi = KalshiClient(api_key_id=KALSHI_API_KEY_ID, private_key_path=PRIVATE_KEY_PATH)
 
 def send_telegram(message):
     if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
